@@ -1,56 +1,38 @@
 using UnityEngine;
 
-public class BezierCurve
+public class BezierCurve : MonoBehaviour
 {
-    public Vector3[] Points;
+    private const float GizmosStep = 0.05f;
 
-    public BezierCurve()
+    [SerializeField] private Transform _pointA;
+    [SerializeField] private Transform _pointB;
+    [SerializeField] private Transform _pointC;
+    [SerializeField] private Transform _pointD;
+
+    private float _t;
+
+    private void Update()
     {
-        Points = new Vector3[4];
+        _t = (_t % 1) + Time.deltaTime;
+
+        transform.position = CubicBezier(_pointA.position, _pointB.position, _pointC.position, _pointD.position, _t);
     }
 
-    public BezierCurve(Vector3[] Points)
-    {
-        this.Points = Points;
-    }
+    private Vector3 LinearBezier(Vector3 a, Vector3 b, float t) => (1 - t) * a + t * b;
 
-    public Vector3 StartPosition
+    private Vector3 QuadraticBezier(Vector3 a, Vector3 b, Vector3 c, float t) => (1 - t) * LinearBezier(a, b, t) + t * LinearBezier(b, c, t);
+
+    private Vector3 CubicBezier(Vector3 a, Vector3 b, Vector3 c, Vector3 d, float t) => (1 - t) * QuadraticBezier(a, b, c, t) + t * QuadraticBezier(b, c, d, t);
+
+    private void OnDrawGizmos()
     {
-        get
+        Vector3 prevPoint = _pointA.position;
+
+        for (float t = GizmosStep; t <= 1f; t += GizmosStep)
         {
-            return Points[0];
+            Vector3 point = CubicBezier(_pointA.position, _pointB.position, _pointC.position, _pointD.position, t);
+            Gizmos.DrawLine(prevPoint, point);
+            prevPoint = point;
         }
-    }
-
-    public Vector3 EndPosition
-    {
-        get
-        {
-            return Points[3];
-        }
-    }
-
-    public Vector3 GetSegment(float Time)
-    {
-        Time = Mathf.Clamp01(Time);
-
-        float time = 1 - Time;
-
-        return (time * time * time * Points[0]) + (3 * time * time * Time * Points[1]) + (3 * time * Time * Time * Points[2]) + (Time * Time * Time * Points[3]);
-    }
-
-    public Vector3[] GetSegments(int Subdivisions)
-    {
-        Vector3[] segments = new Vector3[Subdivisions];
-
-        float time;
-
-        for (int i = 0; i < Subdivisions; i++)
-        {
-            time = (float) i / Subdivisions;
-            segments[i] = GetSegment(time);
-        }
-
-        return segments;
     }
 }
