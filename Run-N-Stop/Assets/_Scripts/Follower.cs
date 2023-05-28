@@ -8,28 +8,62 @@ public class Follower : MonoBehaviour
     private Vector3 _startPosition;
     private BezierCurve _bezierCurve;
 
-    private Vector3 a;
-    private Vector3 b;
-    private Vector3 c;
-    private Vector3 d;
+    private Vector3 _a;
+    private Vector3 _b;
+    private Vector3 _c;
+    private Vector3 _d;
+
+    private int _curveIndex;
 
     private float _t;
 
     private void Start()
     {
+        _bezierCurve = _curves[0].GetComponent<BezierCurve>();
         _startPosition = _curves[0].Find("Offset").Find("PointA").position;
         transform.position = _startPosition;
-        _bezierCurve = _curves[0].GetComponent<BezierCurve>();
-        a = _curves[0].Find("Offset").Find("PointA").position;
-        b = _curves[0].Find("Offset").Find("PointB").position;
-        c = _curves[0].Find("Offset").Find("PointC").position;
-        d = _curves[0].Find("Offset").Find("PointD").position;
+        _a = _curves[0].Find("Offset").Find("PointA").position;
+        _b = _curves[0].Find("Offset").Find("PointB").position;
+        _c = _curves[0].Find("Offset").Find("PointC").position;
+        _d = _curves[0].Find("Offset").Find("PointD").position;
     }
 
     private void Update()
     {
-        _t = (_t % 1) + Time.deltaTime;
+        if (!Input.GetMouseButton(0))
+            return;
 
-        transform.position = _bezierCurve.CubicBezier(a, b, c, d, _t);
+        _t += Time.deltaTime;
+
+        if (_t >= 1f)
+            MoveToNewCurve();
+
+        Vector3 direction = _bezierCurve.CubicBezier(_a, _b, _c, _d, _t);
+        Quaternion targetRotation = Quaternion.LookRotation(direction - transform.position);
+
+        transform.SetPositionAndRotation(direction, targetRotation);
+    }
+
+    private void MoveToNewCurve()
+    {
+        _curveIndex++;
+
+        if (_curveIndex < _curves.Count) 
+        {
+            _a = _curves[_curveIndex].Find("Offset").Find("PointA").position;
+            _b = _curves[_curveIndex].Find("Offset").Find("PointB").position;
+            _c = _curves[_curveIndex].Find("Offset").Find("PointC").position;
+            _d = _curves[_curveIndex].Find("Offset").Find("PointD").position;
+        }
+        else
+        {
+            _a = _curves[0].Find("Offset").Find("PointA").position;
+            _b = _curves[0].Find("Offset").Find("PointB").position;
+            _c = _curves[0].Find("Offset").Find("PointC").position;
+            _d = _curves[0].Find("Offset").Find("PointD").position;
+            _curveIndex = 0;
+        }
+
+        _t = 0;
     }
 }
