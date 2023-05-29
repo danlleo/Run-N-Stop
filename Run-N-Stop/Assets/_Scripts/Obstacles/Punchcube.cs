@@ -17,9 +17,6 @@ public class Punchcube : Obstacle
 
     private void Update()
     {
-        print(_startPosition);
-        print(_endPosition);
-
         if (_t >= 1f)
             _isIncreasing = false;
         else if (_t <= 0f)
@@ -28,7 +25,7 @@ public class Punchcube : Obstacle
         _t = _isIncreasing ? _t + Time.deltaTime : _t - Time.deltaTime;
         _t = Mathf.Clamp01(_t);
 
-        transform.position = Vector3.Lerp(_startPosition, _endPosition, EaseIn(_t));
+        transform.position = Vector3.Lerp(_startPosition, _endPosition, InterpolateUtils.EaseIn(_t));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,10 +34,5 @@ public class Punchcube : Obstacle
         {
             InvokeOnPlayerHit();
         }
-    }
-
-    private float EaseIn(float t)
-    {
-        return t * t;
     }
 }

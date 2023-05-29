@@ -18,7 +18,7 @@ public class Punchbag : Obstacle
         _t = _isIncreasing ? _t + Time.deltaTime : _t - Time.deltaTime;
         _t = Mathf.Clamp01(_t);
 
-        transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, _targetAngle), Quaternion.Euler(0f, 0f, -_targetAngle), EaseInOut(_t));
+        transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, _targetAngle), Quaternion.Euler(0f, 0f, -_targetAngle), InterpolateUtils.EaseInOut(_t));
     }
 
     private void OnTriggerEnter(Collider other)
@@ -28,6 +28,4 @@ public class Punchbag : Obstacle
             InvokeOnPlayerHit();
         }
     }
-
-    private float EaseInOut(float t) => t * t * (3f - 2f * t);
 }

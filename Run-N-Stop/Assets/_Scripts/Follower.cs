@@ -5,6 +5,8 @@ public class Follower : MonoBehaviour
 {
     [SerializeField] private List<Transform> _curves;
 
+    [SerializeField, Range(0f, 1f)] private float _decreaseMovingFactor;
+
     private Vector3 _startPosition;
     private BezierCurve _bezierCurve;
 
@@ -33,7 +35,7 @@ public class Follower : MonoBehaviour
         if (!Input.GetMouseButton(0))
             return;
 
-        _t += Time.deltaTime;
+        _t += Time.deltaTime * _decreaseMovingFactor;
 
         if (_t >= 1f)
             MoveToNewCurve();
