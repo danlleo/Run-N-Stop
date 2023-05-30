@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Punchbag : Obstacle
+public class Punchbag : MonoBehaviour
 {
     [SerializeField, Range(0f, 180f)] private float _targetAngle;
 
@@ -19,13 +19,5 @@ public class Punchbag : Obstacle
         _t = Mathf.Clamp01(_t);
 
         transform.rotation = Quaternion.Slerp(Quaternion.Euler(0f, 0f, _targetAngle), Quaternion.Euler(0f, 0f, -_targetAngle), InterpolateUtils.EaseInOut(_t));
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent(out Follower follower))
-        {
-            InvokeOnPlayerHit();
-        }
     }
 }

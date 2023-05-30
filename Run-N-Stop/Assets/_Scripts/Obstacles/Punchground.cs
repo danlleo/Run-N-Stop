@@ -25,7 +25,7 @@ public class Punchground : Obstacle
         _t = _isIncreasing ? _t + Time.deltaTime : _t - Time.deltaTime;
         _t = Mathf.Clamp01(_t);
 
-        transform.position = Vector3.Lerp(_startPosition, _endPosition, InterpolateUtils.EaseOutCubic(_t));
+        transform.position = Vector3.Lerp(_startPosition, _endPosition, InterpolateUtils.EaseOutExponential(_t));
     }
 
     private void OnTriggerEnter(Collider other)

@@ -16,18 +16,11 @@ public class PlayerManager : MonoBehaviour
     private void OnEnable()
     {
         Obstacle.OnPlayerHit += Obstacle_OnPlayerHit;
-        FinishGround.OnPlayerFinish += FinishGround_OnPlayerFinish;
     }
 
     private void OnDisable()
     {
         Obstacle.OnPlayerHit -= Obstacle_OnPlayerHit;
-        FinishGround.OnPlayerFinish -= FinishGround_OnPlayerFinish;
-    }
-
-    private void FinishGround_OnPlayerFinish(object sender, EventArgs e)
-    {
-        SceneLoadManager.Instance.ReloadCurrentScene();
     }
 
     private void Obstacle_OnPlayerHit(object sender, EventArgs e)
