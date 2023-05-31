@@ -32,6 +32,9 @@ public class Follower : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.State != GameManager.GameState.Playing)
+            return;
+
         if (!Input.GetMouseButton(0))
         {
             PlayerManager.Instance.State = PlayerManager.PlayerState.Idle;

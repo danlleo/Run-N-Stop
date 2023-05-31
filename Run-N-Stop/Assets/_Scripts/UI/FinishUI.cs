@@ -8,7 +8,8 @@ public class FinishUI : MonoBehaviour
     [SerializeField] private Transform _background;
     [SerializeField] private Button _nextLevelButton;
 
-    [SerializeField, Range(0f, 1f)] private float _colorLerpTargetValue;
+    [SerializeField, Range(0f, 1f)] private float _targetAlphaValue;
+    [SerializeField, Range(0f, 2f)] private float _alphaFadeDuration;
 
     private void OnEnable()
     {
@@ -20,27 +21,33 @@ public class FinishUI : MonoBehaviour
         });
     }
 
+    private void OnDisable()
+    {
+        FinishGround.OnPlayerFinish -= FinishGround_OnPlayerFinish;
+    }
+
     private void FinishGround_OnPlayerFinish(object sender, System.EventArgs e)
     {
         _finishUI.gameObject.SetActive(true);
-        StartCoroutine(LerpBackgroundColor());
+        StartCoroutine(FadeIn());
         PlayerManager.Instance.State = PlayerManager.PlayerState.Idle;
     }
 
-    private IEnumerator LerpBackgroundColor()
+    private IEnumerator FadeIn()
     {
         CanvasGroup backgroundCanvasGroup = _background.GetComponent<CanvasGroup>();
 
-        float elapsedValue = 0f;
-        
-        while (elapsedValue < _colorLerpTargetValue)
+        float startTime = Time.time;
+        float startAlpha = backgroundCanvasGroup.alpha;
+
+        while (backgroundCanvasGroup.alpha < _targetAlphaValue)
         {
-            backgroundCanvasGroup.alpha = Mathf.Lerp(0, _colorLerpTargetValue, elapsedValue);
-            elapsedValue += Time.deltaTime;
+            float elapsedTime = Time.time - startTime;
+            float normalizedTime = elapsedTime / _alphaFadeDuration;
+
+            backgroundCanvasGroup.alpha = Mathf.Lerp(startAlpha, _targetAlphaValue, normalizedTime);
 
             yield return null;
         }
-
-        backgroundCanvasGroup.alpha = _colorLerpTargetValue;
     }
 }

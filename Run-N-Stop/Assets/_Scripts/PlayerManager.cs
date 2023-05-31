@@ -27,15 +27,26 @@ public class PlayerManager : MonoBehaviour
     private void OnEnable()
     {
         Obstacle.OnPlayerHit += Obstacle_OnPlayerHit;
+        FinishGround.OnPlayerFinish += FinishGround_OnPlayerFinish;
     }
 
     private void OnDisable()
     {
         Obstacle.OnPlayerHit -= Obstacle_OnPlayerHit;
+        FinishGround.OnPlayerFinish -= FinishGround_OnPlayerFinish;
+    }
+
+    private void FinishGround_OnPlayerFinish(object sender, EventArgs e)
+    {
+        GameManager.Instance.State = GameManager.GameState.Victory;
+        PlayerAnimationController.Instance.TriggerPlayerVictory();
     }
 
     private void Obstacle_OnPlayerHit(object sender, EventArgs e)
     {
-        SceneLoadManager.Instance.ReloadCurrentScene();
+        PlayerAnimationController.Instance.TriggerPlayerObstacleHit();
+        GameManager.Instance.State = GameManager.GameState.Fail;
+
+        //SceneLoadManager.Instance.ReloadCurrentScene();
     }
 }

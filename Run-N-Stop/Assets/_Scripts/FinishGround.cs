@@ -10,6 +10,7 @@ public class FinishGround : MonoBehaviour
         if (other.TryGetComponent(out Follower follower))
         {
             OnPlayerFinish?.Invoke(this, EventArgs.Empty);
+            Destroy(gameObject);
         }
     }
 }
