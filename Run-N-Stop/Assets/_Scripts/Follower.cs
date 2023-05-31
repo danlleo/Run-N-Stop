@@ -33,8 +33,12 @@ public class Follower : MonoBehaviour
     private void Update()
     {
         if (!Input.GetMouseButton(0))
+        {
+            PlayerManager.Instance.State = PlayerManager.PlayerState.Idle;
             return;
+        }
 
+        PlayerManager.Instance.State = PlayerManager.PlayerState.Running;
         _t += Time.deltaTime * _decreaseMovingFactor;
 
         if (_t >= 1f)

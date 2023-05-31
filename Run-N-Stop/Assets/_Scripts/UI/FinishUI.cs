@@ -24,6 +24,7 @@ public class FinishUI : MonoBehaviour
     {
         _finishUI.gameObject.SetActive(true);
         StartCoroutine(LerpBackgroundColor());
+        PlayerManager.Instance.State = PlayerManager.PlayerState.Idle;
     }
 
     private IEnumerator LerpBackgroundColor()
