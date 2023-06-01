@@ -10,6 +10,7 @@ public class MainMenuUI : MonoBehaviour
     {
         _playButton.onClick.AddListener(() =>
         {
+            _levelLoader.gameObject.SetActive(true);
             _levelLoader.InvokeFadeIn(SceneLoadManager.Instance.LoadNewGame);
         });
     }

@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 [DefaultExecutionOrder(-1000)]
 public class SceneLoadManager : MonoBehaviour
 {
-    private static readonly string FIRST_LEVEL = "GameScene";
+    private const string FIRST_LEVEL = "GameScene";
 
     public static SceneLoadManager Instance { get; private set; }
 

@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public GameState State;
 
+    [SerializeField] private LevelLoader _levelLoader;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,5 +24,11 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
         State = GameState.Playing;
+    }
+
+    private void OnEnable()
+    {
+        _levelLoader.gameObject.SetActive(true);
+        _levelLoader.InvokeFadeOut();
     }
 }
