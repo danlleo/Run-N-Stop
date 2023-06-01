@@ -16,6 +16,21 @@ public class SceneLoadManager : MonoBehaviour
             Destroy(gameObject);
     }
 
+    private void OnEnable()
+    {
+        LevelLoader.OnFadeIn += LevelLoader_OnFadeIn;
+    }
+
+    private void OnDisable()
+    {
+        LevelLoader.OnFadeIn -= LevelLoader_OnFadeIn;
+    }
+
+    private void LevelLoader_OnFadeIn(object sender, LevelLoader.LoadAction e)
+    {
+        e.Invoke();
+    }
+
     public void ReloadCurrentScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
@@ -24,7 +39,8 @@ public class SceneLoadManager : MonoBehaviour
 
     public void LoadNewGame()
     {
-        Scene firstLevel = SceneManager.GetSceneByName(FIRST_LEVEL);
-        SceneManager.LoadScene(firstLevel.buildIndex);
+        // Scene firstLevel = SceneManager.GetSceneByName(FIRST_LEVEL);
+
+        SceneManager.LoadScene(0);
     }
 }
