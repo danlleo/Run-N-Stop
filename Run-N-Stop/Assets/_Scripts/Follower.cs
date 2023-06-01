@@ -5,7 +5,7 @@ public class Follower : MonoBehaviour
 {
     [SerializeField] private List<Transform> _curves;
 
-    [SerializeField, Range(0f, 1f)] private float _decreaseMovingFactor;
+    [SerializeField] private float _moveDuration;
 
     private Vector3 _startPosition;
     private BezierCurve _bezierCurve;
@@ -18,16 +18,14 @@ public class Follower : MonoBehaviour
     private int _curveIndex;
 
     private float _t;
+    private float _elapsedTime;
 
     private void Start()
     {
         _bezierCurve = _curves[0].GetComponent<BezierCurve>();
         _startPosition = _curves[0].Find("PointA").position;
         transform.position = _startPosition;
-        _a = _curves[0].Find("PointA").position;
-        _b = _curves[0].Find("PointB").position;
-        _c = _curves[0].Find("PointC").position;
-        _d = _curves[0].Find("PointD").position;
+        ResetPosition();
     }
 
     private void Update()
@@ -42,7 +40,9 @@ public class Follower : MonoBehaviour
         }
 
         PlayerManager.Instance.State = PlayerManager.PlayerState.Running;
-        _t += Time.deltaTime * _decreaseMovingFactor;
+
+        _elapsedTime += Time.deltaTime;
+        _t = Mathf.Clamp01(_elapsedTime / _moveDuration);
 
         if (_t >= 1f)
             MoveToNewCurve();
@@ -59,20 +59,20 @@ public class Follower : MonoBehaviour
 
         if (_curveIndex < _curves.Count) 
         {
-            _a = _curves[_curveIndex].Find("PointA").position;
+            _a = _curves[_curveIndex - 1].Find("PointD").Find("PointA").position;
             _b = _curves[_curveIndex].Find("PointB").position;
             _c = _curves[_curveIndex].Find("PointC").position;
             _d = _curves[_curveIndex].Find("PointD").position;
         }
-        else
-        {
-            _a = _curves[0].Find("PointA").position;
-            _b = _curves[0].Find("PointB").position;
-            _c = _curves[0].Find("PointC").position;
-            _d = _curves[0].Find("PointD").position;
-            _curveIndex = 0;
-        }
 
-        _t = 0;
+        _elapsedTime = 0;
+    }
+
+    private void ResetPosition()
+    {
+        _a = _curves[0].Find("PointA").position;
+        _b = _curves[0].Find("PointB").position;
+        _c = _curves[0].Find("PointC").position;
+        _d = _curves[0].Find("PointD").position;
     }
 }

@@ -42,5 +42,10 @@ public class BezierCurve : MonoBehaviour
         Gizmos.DrawSphere(_pointC.position, 0.2f);
     }
 
-    public void SetNewPosition(Transform pointD) => _pointA = pointD;
+    public void SetNewPosition(Transform pointD)
+    {
+        _pointA.position = pointD.position;
+        _pointA.SetParent(pointD);
+        _pointA = pointD.transform;
+    }
 }

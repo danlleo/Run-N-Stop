@@ -62,7 +62,7 @@ public static class InterpolateUtils
 
         if (t < 0.5f)
         {
-            t = t * 2;
+            t *= 2;
 
             return -0.5f * (amplitude * Mathf.Pow(2, 10 * (t -= 1)) * Mathf.Sin((t - s) * s2 * Mathf.PI / period));
         }
