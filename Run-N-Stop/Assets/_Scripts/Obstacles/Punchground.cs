@@ -32,7 +32,7 @@ public class Punchground : Obstacle
     {
         if (other.TryGetComponent(out Follower follower))
         {
-            InvokeOnPlayerHit();
+            InvokeOnPlayerHit(transform.root.gameObject);
         }
     }
 }

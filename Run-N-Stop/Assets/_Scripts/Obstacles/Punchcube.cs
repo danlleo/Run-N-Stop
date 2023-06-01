@@ -32,7 +32,7 @@ public class Punchcube : Obstacle
     {
         if (other.TryGetComponent(out Follower follower))
         {
-            InvokeOnPlayerHit();
+            InvokeOnPlayerHit(transform.root.gameObject);
         }
     }
 }

@@ -6,14 +6,14 @@ public class Punchcircle : Obstacle
 
     private void Update()
     {
-        transform.Rotate(Vector3.up * _rotatingSpeed * Time.deltaTime);
+        transform.Rotate(_rotatingSpeed * Time.deltaTime * Vector3.up);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out Follower follower))
         {
-            InvokeOnPlayerHit();
+            InvokeOnPlayerHit(transform.root.gameObject);
         }
     }
 }

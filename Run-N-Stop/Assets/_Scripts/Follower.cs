@@ -22,12 +22,12 @@ public class Follower : MonoBehaviour
     private void Start()
     {
         _bezierCurve = _curves[0].GetComponent<BezierCurve>();
-        _startPosition = _curves[0].Find("Offset").Find("PointA").position;
+        _startPosition = _curves[0].Find("PointA").position;
         transform.position = _startPosition;
-        _a = _curves[0].Find("Offset").Find("PointA").position;
-        _b = _curves[0].Find("Offset").Find("PointB").position;
-        _c = _curves[0].Find("Offset").Find("PointC").position;
-        _d = _curves[0].Find("Offset").Find("PointD").position;
+        _a = _curves[0].Find("PointA").position;
+        _b = _curves[0].Find("PointB").position;
+        _c = _curves[0].Find("PointC").position;
+        _d = _curves[0].Find("PointD").position;
     }
 
     private void Update()
@@ -59,17 +59,17 @@ public class Follower : MonoBehaviour
 
         if (_curveIndex < _curves.Count) 
         {
-            _a = _curves[_curveIndex].Find("Offset").Find("PointA").position;
-            _b = _curves[_curveIndex].Find("Offset").Find("PointB").position;
-            _c = _curves[_curveIndex].Find("Offset").Find("PointC").position;
-            _d = _curves[_curveIndex].Find("Offset").Find("PointD").position;
+            _a = _curves[_curveIndex].Find("PointA").position;
+            _b = _curves[_curveIndex].Find("PointB").position;
+            _c = _curves[_curveIndex].Find("PointC").position;
+            _d = _curves[_curveIndex].Find("PointD").position;
         }
         else
         {
-            _a = _curves[0].Find("Offset").Find("PointA").position;
-            _b = _curves[0].Find("Offset").Find("PointB").position;
-            _c = _curves[0].Find("Offset").Find("PointC").position;
-            _d = _curves[0].Find("Offset").Find("PointD").position;
+            _a = _curves[0].Find("PointA").position;
+            _b = _curves[0].Find("PointB").position;
+            _c = _curves[0].Find("PointC").position;
+            _d = _curves[0].Find("PointD").position;
             _curveIndex = 0;
         }
 

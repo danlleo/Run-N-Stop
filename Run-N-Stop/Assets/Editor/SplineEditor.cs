@@ -4,8 +4,6 @@ using UnityEngine;
 [CustomEditor(typeof(Spline))]
 public class SplineEditor : Editor
 {
-    private bool _closedLoop;
-
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -33,13 +31,5 @@ public class SplineEditor : Editor
 
             spline.RemoveBezierCurve();
         }
-
-        GUILayout.Space(20);
-        GUILayout.BeginHorizontal();
-        GUILayout.FlexibleSpace();
-
-        _closedLoop = GUILayout.Toggle(_closedLoop, "Closed Loop");
-
-        GUILayout.EndHorizontal();
     }
 }

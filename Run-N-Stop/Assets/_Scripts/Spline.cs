@@ -3,18 +3,11 @@ using UnityEngine;
 
 public class Spline : MonoBehaviour
 {
-    [SerializeField] private float _nextBezierCurveOffset = 10f;
-
     [SerializeField] private Transform _cubicBezierPrefab;
 
-    private List<Transform> _bezierCurves;
+    private List<Transform> _bezierCurves = new List<Transform>();
 
     private Vector3 nextBezierCurvePosition;
-
-    private void Awake()
-    {
-        _bezierCurves = new List<Transform>();
-    }
 
     public void AddBezierCurve()
     {
@@ -24,19 +17,21 @@ public class Spline : MonoBehaviour
         }
         else
         {
-            Vector3 startPoint = _bezierCurves[^1].Find("Offset").Find("PointD").position;
-            nextBezierCurvePosition = startPoint + (Vector3.right * _nextBezierCurveOffset);
+            Vector3 startPoint = _bezierCurves[^1].Find("PointD").position;
+            nextBezierCurvePosition = startPoint;
         }
 
-        Transform bezierCurve = Instantiate(_cubicBezierPrefab, nextBezierCurvePosition, Quaternion.identity);
+        Quaternion targetBezierRotation = _bezierCurves.Count == 0 ? Quaternion.identity : _bezierCurves[^1].transform.rotation;
+
+        Transform bezierCurve = Instantiate(_cubicBezierPrefab, nextBezierCurvePosition, targetBezierRotation);
 
         if (_bezierCurves.Count > 0 )
         {
             Transform previousBezierCurve = _bezierCurves[^1];
-            Transform startPointTransform = bezierCurve.Find("Offset").Find("PointA");
+            Transform startPointTransform = bezierCurve.Find("PointA");
 
-            startPointTransform.position = previousBezierCurve.Find("Offset").Find("PointD").position;
-            bezierCurve.GetComponent<BezierCurve>().SetNewPosition(previousBezierCurve.Find("Offset").Find("PointD"));
+            startPointTransform.position = previousBezierCurve.Find("PointD").position;
+            bezierCurve.GetComponent<BezierCurve>().SetNewPosition(previousBezierCurve.Find("PointD"));
         }
 
         _bezierCurves.Add(bezierCurve);

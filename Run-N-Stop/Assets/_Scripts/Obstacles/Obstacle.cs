@@ -5,8 +5,9 @@ public class Obstacle : MonoBehaviour
 {
     public static event EventHandler OnPlayerHit;
 
-    public void InvokeOnPlayerHit()
+    protected void InvokeOnPlayerHit(GameObject obstacle)
     {
         OnPlayerHit?.Invoke(this, EventArgs.Empty);
+        Destroy(obstacle);
     }
 }
